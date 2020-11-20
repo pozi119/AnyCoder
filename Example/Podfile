@@ -1,0 +1,11 @@
+use_frameworks!
+
+target 'AnyCoder_Example' do
+  pod 'AnyCoder', :path => '../'
+
+  target 'AnyCoder_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end
