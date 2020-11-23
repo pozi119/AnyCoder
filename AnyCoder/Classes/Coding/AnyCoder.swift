@@ -137,20 +137,18 @@ open class AnyEncoder {
 }
 
 open class AnyDecoder {
-    public init() {}
-
-    open func decode<T>(_ type: T.Type, from containers: [[String: Primitive]]) throws -> [T] {
+    open class func decode<T>(_ type: T.Type, from containers: [[String: Primitive]]) throws -> [T] {
         return try containers.map { try decode(type, from: $0) }
     }
 
-    open func decode<T>(_ type: T.Type, from container: [String: Primitive]) throws -> T {
+    open class func decode<T>(_ type: T.Type, from container: [String: Primitive]) throws -> T {
         guard let result = try createObject(type, from: container) as? T else {
             throw DecodingError.mismatch(type)
         }
         return result
     }
 
-    private func createObject(_ type: Any.Type, from container: [String: Any]) throws -> Any {
+    private class func createObject(_ type: Any.Type, from container: [String: Any]) throws -> Any {
         var info = try typeInfo(of: type)
         let genericType: Any.Type
         if info.kind == .optional {
