@@ -1,4 +1,7 @@
+
+platform :ios, '12.0'
 use_frameworks!
+install!'cocoapods', :warn_for_unused_master_specs_repo => false
 
 target 'AnyCoder_Example' do
   pod 'AnyCoder', :path => '../'
