@@ -14,6 +14,9 @@ TODO: Add long description of the pod here.
   s.source           = { :git => 'https://github.com/pozi119/AnyCoder.git', :tag => s.version.to_s }
 
   s.ios.deployment_target = '10.0'
+  s.tvos.deployment_target = '10.0'
+  s.osx.deployment_target = '10.12'
+  s.watchos.deployment_target = '3.0'
 
   s.source_files = 'AnyCoder/Classes/**/*'
   
