@@ -64,7 +64,7 @@ class Tests: XCTestCase {
 
         do {
             let dic0 = try AnyEncoder.encode(user)
-            let decoded0 = try AnyDecoder().decode(User?.self, from: dic0)
+            let decoded0 = try AnyDecoder.decode(User?.self, from: dic0)
             XCTAssert(user != nil && decoded0 != nil && user! == decoded0!)
 
             let dic = try ManyEncoder().encode(person)
@@ -100,6 +100,22 @@ class Tests: XCTestCase {
             print(tupleinfo)
         } catch {
             XCTAssertThrowsError(error)
+        }
+    }
+    
+    func testPrimitive() {
+        let a = "aaa"
+        let b:Int = 111
+        let c:Bool = true
+        do {
+            let aa = try AnyEncoder.encode(a)
+            let bb = try AnyEncoder.encode(b)
+            let cc = try AnyEncoder.encode(c)
+            print(aa)
+            print(bb)
+            print(cc)
+        } catch  {
+            print(error)
         }
     }
 }

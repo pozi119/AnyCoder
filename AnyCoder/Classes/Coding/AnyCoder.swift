@@ -210,21 +210,21 @@ open class AnyDecoder {
                         val = getters(type: prop.type).get(from: pval)
                     } else if let xval = value as? Primitive {
                         switch prop.type {
-                        case is Int.Type: val = Int(Primitive: xval) ?? 0
-                        case is Int8.Type: val = Int8(Primitive: xval) ?? 0
-                        case is Int16.Type: val = Int16(Primitive: xval) ?? 0
-                        case is Int32.Type: val = Int32(Primitive: xval) ?? 0
-                        case is Int64.Type: val = Int64(Primitive: xval) ?? 0
-                        case is UInt.Type: val = UInt(Primitive: xval) ?? 0
-                        case is UInt8.Type: val = UInt8(Primitive: xval) ?? 0
-                        case is UInt16.Type: val = UInt16(Primitive: xval) ?? 0
-                        case is UInt32.Type: val = UInt32(Primitive: xval) ?? 0
-                        case is UInt64.Type: val = UInt64(Primitive: xval) ?? 0
-                        case is Bool.Type: val = Bool(Primitive: xval) ?? 0
-                        case is Float.Type: val = Float(Primitive: xval) ?? 0.0
-                        case is Double.Type: val = Double(Primitive: xval) ?? 0.0
-                        case is Data.Type: val = Data(Primitive: xval) ?? Data()
-                        case is String.Type: val = String(Primitive: xval) ?? ""
+                        case is Int.Type: val = Int(primitive: xval) ?? 0
+                        case is Int8.Type: val = Int8(primitive: xval) ?? 0
+                        case is Int16.Type: val = Int16(primitive: xval) ?? 0
+                        case is Int32.Type: val = Int32(primitive: xval) ?? 0
+                        case is Int64.Type: val = Int64(primitive: xval) ?? 0
+                        case is UInt.Type: val = UInt(primitive: xval) ?? 0
+                        case is UInt8.Type: val = UInt8(primitive: xval) ?? 0
+                        case is UInt16.Type: val = UInt16(primitive: xval) ?? 0
+                        case is UInt32.Type: val = UInt32(primitive: xval) ?? 0
+                        case is UInt64.Type: val = UInt64(primitive: xval) ?? 0
+                        case is Bool.Type: val = Bool(primitive: xval) ?? 0
+                        case is Float.Type: val = Float(primitive: xval) ?? 0.0
+                        case is Double.Type: val = Double(primitive: xval) ?? 0.0
+                        case is Data.Type: val = Data(primitive: xval) ?? Data()
+                        case is String.Type: val = String(primitive: xval) ?? ""
                         default: break
                         }
                     }
