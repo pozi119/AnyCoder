@@ -26,12 +26,10 @@ extension Double: Primitive {}
 extension String: Primitive {}
 extension Data: Primitive {}
 
-public extension Primitive {
+public extension Int {
     init?(primitive: Primitive) {
         var value: Any?
-        switch Self.self {
-        case is Int.Type:
-            switch primitive {
+        switch primitive {
             case let int as Int: value = int
             case let int8 as Int8: value = Int(truncatingIfNeeded: int8)
             case let int16 as Int16: value = Int(truncatingIfNeeded: int16)
@@ -48,10 +46,16 @@ public extension Primitive {
             case let string as String: value = Int(string)
             case let data as Data: value = Int(data: data)
             default: break
-            }
+        }
+        guard let result = value as? Self else { return nil }
+        self = result
+    }
+}
 
-        case is Int8.Type:
-            switch primitive {
+public extension Int8 {
+    init?(primitive: Primitive) {
+        var value: Any?
+        switch primitive {
             case let int as Int: value = Int8(truncatingIfNeeded: int)
             case let int8 as Int8: value = int8
             case let int16 as Int16: value = Int8(truncatingIfNeeded: int16)
@@ -68,10 +72,16 @@ public extension Primitive {
             case let string as String: value = Int8(string)
             case let data as Data: value = Int8(data: data)
             default: break
-            }
+        }
+        guard let result = value as? Self else { return nil }
+        self = result
+    }
+}
 
-        case is Int16.Type:
-            switch primitive {
+public extension Int16 {
+    init?(primitive: Primitive) {
+        var value: Any?
+        switch primitive {
             case let int as Int: value = Int16(truncatingIfNeeded: int)
             case let int8 as Int8: value = Int16(truncatingIfNeeded: int8)
             case let int16 as Int16: value = int16
@@ -88,10 +98,16 @@ public extension Primitive {
             case let string as String: value = Int16(string)
             case let data as Data: value = Int16(data: data)
             default: break
-            }
+        }
+        guard let result = value as? Self else { return nil }
+        self = result
+    }
+}
 
-        case is Int32.Type:
-            switch primitive {
+public extension Int32 {
+    init?(primitive: Primitive) {
+        var value: Any?
+        switch primitive {
             case let int as Int: value = Int32(truncatingIfNeeded: int)
             case let int8 as Int8: value = Int32(truncatingIfNeeded: int8)
             case let int16 as Int16: value = Int32(truncatingIfNeeded: int16)
@@ -108,10 +124,16 @@ public extension Primitive {
             case let string as String: value = Int32(string)
             case let data as Data: value = Int(data: data)
             default: break
-            }
+        }
+        guard let result = value as? Self else { return nil }
+        self = result
+    }
+}
 
-        case is Int64.Type:
-            switch primitive {
+public extension Int64 {
+    init?(primitive: Primitive) {
+        var value: Any?
+        switch primitive {
             case let int as Int: value = Int64(truncatingIfNeeded: int)
             case let int8 as Int8: value = Int64(truncatingIfNeeded: int8)
             case let int16 as Int16: value = Int64(truncatingIfNeeded: int16)
@@ -128,10 +150,16 @@ public extension Primitive {
             case let string as String: value = Int64(string)
             case let data as Data: value = Int64(data: data)
             default: break
-            }
+        }
+        guard let result = value as? Self else { return nil }
+        self = result
+    }
+}
 
-        case is UInt.Type:
-            switch primitive {
+public extension UInt {
+    init?(primitive: Primitive) {
+        var value: Any?
+        switch primitive {
             case let int as Int: value = UInt(truncatingIfNeeded: int)
             case let int8 as Int8: value = UInt(truncatingIfNeeded: int8)
             case let int16 as Int16: value = UInt(truncatingIfNeeded: int16)
@@ -148,10 +176,16 @@ public extension Primitive {
             case let string as String: value = UInt(string)
             case let data as Data: value = UInt(data: data)
             default: break
-            }
+        }
+        guard let result = value as? Self else { return nil }
+        self = result
+    }
+}
 
-        case is UInt8.Type:
-            switch primitive {
+public extension UInt8 {
+    init?(primitive: Primitive) {
+        var value: Any?
+        switch primitive {
             case let int as Int: value = UInt8(truncatingIfNeeded: int)
             case let int8 as Int8: value = UInt8(truncatingIfNeeded: int8)
             case let int16 as Int16: value = UInt8(truncatingIfNeeded: int16)
@@ -168,10 +202,16 @@ public extension Primitive {
             case let string as String: value = UInt8(string)
             case let data as Data: value = UInt8(data: data)
             default: break
-            }
+        }
+        guard let result = value as? Self else { return nil }
+        self = result
+    }
+}
 
-        case is UInt16.Type:
-            switch primitive {
+public extension UInt16 {
+    init?(primitive: Primitive) {
+        var value: Any?
+        switch primitive {
             case let int as Int: value = UInt16(truncatingIfNeeded: int)
             case let int8 as Int8: value = UInt16(truncatingIfNeeded: int8)
             case let int16 as Int16: value = UInt16(truncatingIfNeeded: int16)
@@ -188,10 +228,16 @@ public extension Primitive {
             case let string as String: value = UInt16(string)
             case let data as Data: value = UInt16(data: data)
             default: break
-            }
+        }
+        guard let result = value as? Self else { return nil }
+        self = result
+    }
+}
 
-        case is UInt32.Type:
-            switch primitive {
+public extension UInt32 {
+    init?(primitive: Primitive) {
+        var value: Any?
+        switch primitive {
             case let int as Int: value = UInt32(truncatingIfNeeded: int)
             case let int8 as Int8: value = UInt32(truncatingIfNeeded: int8)
             case let int16 as Int16: value = UInt32(truncatingIfNeeded: int16)
@@ -208,10 +254,16 @@ public extension Primitive {
             case let string as String: value = UInt32(string)
             case let data as Data: value = UInt32(data: data)
             default: break
-            }
+        }
+        guard let result = value as? Self else { return nil }
+        self = result
+    }
+}
 
-        case is UInt64.Type:
-            switch primitive {
+public extension UInt64 {
+    init?(primitive: Primitive) {
+        var value: Any?
+        switch primitive {
             case let int as Int: value = UInt64(truncatingIfNeeded: int)
             case let int8 as Int8: value = UInt64(truncatingIfNeeded: int8)
             case let int16 as Int16: value = UInt64(truncatingIfNeeded: int16)
@@ -228,10 +280,16 @@ public extension Primitive {
             case let string as String: value = UInt64(string)
             case let data as Data: value = UInt64(data: data)
             default: break
-            }
+        }
+        guard let result = value as? Self else { return nil }
+        self = result
+    }
+}
 
-        case is Bool.Type:
-            switch primitive {
+public extension Bool {
+    init?(primitive: Primitive) {
+        var value: Any?
+        switch primitive {
             case let int as Int: value = int > 0
             case let int8 as Int8: value = int8 > 0
             case let int16 as Int16: value = int16 > 0
@@ -248,10 +306,16 @@ public extension Primitive {
             case let string as String: value = (Int(string) ?? 0) > 0
             case let data as Data: value = data.bytes[0] > 0
             default: break
-            }
+        }
+        guard let result = value as? Self else { return nil }
+        self = result
+    }
+}
 
-        case is Float.Type:
-            switch primitive {
+public extension Float {
+    init?(primitive: Primitive) {
+        var value: Any?
+        switch primitive {
             case let int as Int: value = Float(int)
             case let int8 as Int8: value = Float(int8)
             case let int16 as Int16: value = Float(int16)
@@ -268,10 +332,16 @@ public extension Primitive {
             case let string as String: value = Float(string)
             case let data as Data: value = Float(data: data)
             default: break
-            }
+        }
+        guard let result = value as? Self else { return nil }
+        self = result
+    }
+}
 
-        case is Double.Type:
-            switch primitive {
+public extension Double {
+    init?(primitive: Primitive) {
+        var value: Any?
+        switch primitive {
             case let int as Int: value = Double(int)
             case let int8 as Int8: value = Double(int8)
             case let int16 as Int16: value = Double(int16)
@@ -288,10 +358,16 @@ public extension Primitive {
             case let string as String: value = Double(string)
             case let data as Data: value = Double(data: data)
             default: break
-            }
+        }
+        guard let result = value as? Self else { return nil }
+        self = result
+    }
+}
 
-        case is String.Type:
-            switch primitive {
+public extension String {
+    init?(primitive: Primitive, hex: Bool = false) {
+        var value: Any?
+        switch primitive {
             case let int as Int: value = String(int)
             case let int8 as Int8: value = String(int8)
             case let int16 as Int16: value = String(int16)
@@ -306,12 +382,18 @@ public extension Primitive {
             case let float as Float: value = String(float)
             case let double as Double: value = String(double)
             case let string as String: value = string
-            case let data as Data: value = data.hex
+            case let data as Data: value = hex ? data.hex : String(bytes: data.bytes)
             default: break
-            }
+        }
+        guard let result = value as? Self else { return nil }
+        self = result
+    }
+}
 
-        case is Data.Type:
-            switch primitive {
+public extension Data {
+    init?(primitive: Primitive, hex: Bool = false) {
+        var value: Any?
+        switch primitive {
             case let int as Int: value = Data(integer: int)
             case let int8 as Int8: value = Data(integer: int8)
             case let int16 as Int16: value = Data(integer: int16)
@@ -325,17 +407,9 @@ public extension Primitive {
             case let bool as Bool: value = Data((bool ? 1 : 0).bytes)
             case let float as Float: value = Data(floating: float)
             case let double as Double: value = Data(floating: double)
-            case let string as String:
-                var data = Data(hex: string)
-                if data.count == 0 && string.count > 0 {
-                    data = Data(string.bytes)
-                }
-                value = data
+            case let string as String: value = hex ? Data(hex: string) : Data(string.bytes)
             case let data as Data: value = data
             default: break
-            }
-
-        default: break
         }
         guard let result = value as? Self else { return nil }
         self = result
@@ -345,7 +419,7 @@ public extension Primitive {
 public extension BinaryInteger {
     init(data: Data) {
         let bytes = data.bytes
-        let uint64 = (0 ..< bytes.count).reduce(0) { $0 & (UInt64(bytes[$1]) << ($1 * 8)) }
+        let uint64 = (0 ..< bytes.count).reduce(0) { $0 | (UInt64(bytes[$1]) << ($1 * 8)) }
         self.init(truncatingIfNeeded: uint64)
     }
 
@@ -381,10 +455,10 @@ public extension Data {
 
     private static func hexDigit(_ byte: UInt8) -> UInt8 {
         switch byte {
-        case 0x30 ... 0x39: return byte - 0x30
-        case 0x41 ... 0x46: return byte - 0x41 + 0xA
-        case 0x61 ... 0x66: return byte - 0x61 + 0xA
-        default: return 0xFF
+            case 0x30 ... 0x39: return byte - 0x30
+            case 0x41 ... 0x46: return byte - 0x41 + 0xA
+            case 0x61 ... 0x66: return byte - 0x61 + 0xA
+            default: return 0xFF
         }
     }
 

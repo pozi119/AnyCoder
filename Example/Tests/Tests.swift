@@ -61,6 +61,7 @@ class Tests: XCTestCase {
         let user: User? = User(id: 2, name: "zhangsan")
         user?.list = [1, 2, 3, 4, 5]
         user?.data = data
+        user?.person = person
 
         do {
             let dic0 = try AnyEncoder.encode(user)

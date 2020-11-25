@@ -63,22 +63,22 @@ func cast<T>(_ item: Any?, as type: T.Type) throws -> T {
     let desc = String(describing: temp)
     var value: T?
     switch type {
-    case is Int.Type: value = (Int(desc) ?? 0) as? T
-    case is Int8.Type: value = (Int8(desc) ?? 0) as? T
-    case is Int16.Type: value = (Int16(desc) ?? 0) as? T
-    case is Int32.Type: value = (Int32(desc) ?? 0) as? T
-    case is Int64.Type: value = (Int64(desc) ?? 0) as? T
-    case is Int.Type: value = (UInt(desc) ?? 0) as? T
-    case is UInt8.Type: value = (UInt8(desc) ?? 0) as? T
-    case is UInt16.Type: value = (UInt16(desc) ?? 0) as? T
-    case is UInt32.Type: value = (UInt32(desc) ?? 0) as? T
-    case is UInt64.Type: value = (UInt64(desc) ?? 0) as? T
-    case is Bool.Type: value = (Bool(desc) ?? false) as? T
-    case is Float.Type: value = (Float(desc) ?? 0) as? T
-    case is Double.Type: value = (Double(desc) ?? 0) as? T
-    case is String.Type: value = desc as? T
-    case is Data.Type: value = Data(hex: desc) as? T
-    default: value = nil
+        case is Int.Type: value = (Int(desc) ?? 0) as? T
+        case is Int8.Type: value = (Int8(desc) ?? 0) as? T
+        case is Int16.Type: value = (Int16(desc) ?? 0) as? T
+        case is Int32.Type: value = (Int32(desc) ?? 0) as? T
+        case is Int64.Type: value = (Int64(desc) ?? 0) as? T
+        case is Int.Type: value = (UInt(desc) ?? 0) as? T
+        case is UInt8.Type: value = (UInt8(desc) ?? 0) as? T
+        case is UInt16.Type: value = (UInt16(desc) ?? 0) as? T
+        case is UInt32.Type: value = (UInt32(desc) ?? 0) as? T
+        case is UInt64.Type: value = (UInt64(desc) ?? 0) as? T
+        case is Bool.Type: value = (Bool(desc) ?? false) as? T
+        case is Float.Type: value = (Float(desc) ?? 0) as? T
+        case is Double.Type: value = (Double(desc) ?? 0) as? T
+        case is String.Type: value = desc as? T
+        case is Data.Type: value = Data(hex: desc) as? T
+        default: value = nil
     }
 
     guard value != nil else {
@@ -119,14 +119,14 @@ extension ManyEncoder {
             var encoded: [String: Primitive] = [:]
             for (key, value) in temp {
                 switch value {
-                case let value as Primitive:
-                    encoded[key] = value
-                case _ as NSNull:
-                    break
-                default:
-                    let data = try JSONSerialization.data(withJSONObject: value, options: [])
-                    let string = String(bytes: data.bytes)
-                    encoded[key] = string
+                    case let value as Primitive:
+                        encoded[key] = value
+                    case _ as NSNull:
+                        break
+                    default:
+                        let data = try JSONSerialization.data(withJSONObject: value, options: [])
+                        let string = String(bytes: data.bytes)
+                        encoded[key] = string
                 }
             }
             return encoded
@@ -406,25 +406,25 @@ open class ManyDecoder: Decoder {
         do {
             var result: T
             switch (item, type) {
-            case (let data as Data, is Data.Type):
-                result = data as! T
+                case (let data as Data, is Data.Type):
+                    result = data as! T
 
-            case (let string as String, is Data.Type):
-                result = Data(hex: string) as! T
+                case (let string as String, is Data.Type):
+                    result = Data(hex: string) as! T
 
-            case let (string as String, _):
-                let data = string.data(using: .utf8) ?? Data()
-                let json = try JSONSerialization.jsonObject(with: data, options: [])
-                result = try decode(type, from: json)
+                case let (string as String, _):
+                    let data = string.data(using: .utf8) ?? Data()
+                    let json = try JSONSerialization.jsonObject(with: data, options: [])
+                    result = try decode(type, from: json)
 
-            case let (array as [Any], _):
-                result = try decode(type, from: array)
+                case let (array as [Any], _):
+                    result = try decode(type, from: array)
 
-            case let (dictionary as [String: Any], _):
-                result = try decode(type, from: dictionary)
+                case let (dictionary as [String: Any], _):
+                    result = try decode(type, from: dictionary)
 
-            default:
-                throw DecodingError.mismatch(type)
+                default:
+                    throw DecodingError.mismatch(type)
             }
             return result
         } catch _ {
