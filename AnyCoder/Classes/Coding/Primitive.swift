@@ -26,6 +26,10 @@ extension Double: Primitive {}
 extension String: Primitive {}
 extension Data: Primitive {}
 
+extension NSNumber: Primitive {}
+extension NSString: Primitive {}
+extension NSData: Primitive {}
+
 public extension Int {
     init?(primitive: Primitive) {
         var value: Any?
@@ -45,6 +49,9 @@ public extension Int {
             case let double as Double: value = Int(double)
             case let string as String: value = Int(string)
             case let data as Data: value = Int(data: data)
+            case let number as NSNumber: value = number.intValue
+            case let nsstring as NSString: value = nsstring.intValue
+            case let nsdata as NSData: let data = nsdata as Data; value = Int(data: data)
             default: break
         }
         guard let result = value as? Self else { return nil }
@@ -71,6 +78,9 @@ public extension Int8 {
             case let double as Double: value = Int8(double)
             case let string as String: value = Int8(string)
             case let data as Data: value = Int8(data: data)
+            case let number as NSNumber: value = number.int8Value
+            case let nsstring as NSString: value = Int8(nsstring as String)
+            case let nsdata as NSData: let data = nsdata as Data; value = Int8(data: data)
             default: break
         }
         guard let result = value as? Self else { return nil }
@@ -97,6 +107,9 @@ public extension Int16 {
             case let double as Double: value = Int16(double)
             case let string as String: value = Int16(string)
             case let data as Data: value = Int16(data: data)
+            case let number as NSNumber: value = number.int16Value
+            case let nsstring as NSString: value = Int16(nsstring as String)
+            case let nsdata as NSData: let data = nsdata as Data; value = Int16(data: data)
             default: break
         }
         guard let result = value as? Self else { return nil }
@@ -123,6 +136,9 @@ public extension Int32 {
             case let double as Double: value = Int32(double)
             case let string as String: value = Int32(string)
             case let data as Data: value = Int(data: data)
+            case let number as NSNumber: value = number.int32Value
+            case let nsstring as NSString: value = Int32(nsstring as String)
+            case let nsdata as NSData: let data = nsdata as Data; value = Int32(data: data)
             default: break
         }
         guard let result = value as? Self else { return nil }
@@ -149,6 +165,9 @@ public extension Int64 {
             case let double as Double: value = Int64(double)
             case let string as String: value = Int64(string)
             case let data as Data: value = Int64(data: data)
+            case let number as NSNumber: value = number.int64Value
+            case let nsstring as NSString: value = Int64(nsstring as String)
+            case let nsdata as NSData: let data = nsdata as Data; value = Int64(data: data)
             default: break
         }
         guard let result = value as? Self else { return nil }
@@ -175,6 +194,9 @@ public extension UInt {
             case let double as Double: value = UInt(double)
             case let string as String: value = UInt(string)
             case let data as Data: value = UInt(data: data)
+            case let number as NSNumber: value = number.uintValue
+            case let nsstring as NSString: value = UInt(nsstring as String)
+            case let nsdata as NSData: let data = nsdata as Data; value = UInt(data: data)
             default: break
         }
         guard let result = value as? Self else { return nil }
@@ -201,6 +223,9 @@ public extension UInt8 {
             case let double as Double: value = UInt8(double)
             case let string as String: value = UInt8(string)
             case let data as Data: value = UInt8(data: data)
+            case let number as NSNumber: value = number.uint8Value
+            case let nsstring as NSString: value = UInt8(nsstring as String)
+            case let nsdata as NSData: let data = nsdata as Data; value = UInt8(data: data)
             default: break
         }
         guard let result = value as? Self else { return nil }
@@ -227,6 +252,9 @@ public extension UInt16 {
             case let double as Double: value = UInt16(double)
             case let string as String: value = UInt16(string)
             case let data as Data: value = UInt16(data: data)
+            case let number as NSNumber: value = number.uint16Value
+            case let nsstring as NSString: value = UInt16(nsstring as String)
+            case let nsdata as NSData: let data = nsdata as Data; value = UInt16(data: data)
             default: break
         }
         guard let result = value as? Self else { return nil }
@@ -253,6 +281,9 @@ public extension UInt32 {
             case let double as Double: value = UInt32(double)
             case let string as String: value = UInt32(string)
             case let data as Data: value = UInt32(data: data)
+            case let number as NSNumber: value = number.uint32Value
+            case let nsstring as NSString: value = UInt32(nsstring as String)
+            case let nsdata as NSData: let data = nsdata as Data; value = UInt32(data: data)
             default: break
         }
         guard let result = value as? Self else { return nil }
@@ -279,6 +310,9 @@ public extension UInt64 {
             case let double as Double: value = UInt64(double)
             case let string as String: value = UInt64(string)
             case let data as Data: value = UInt64(data: data)
+            case let number as NSNumber: value = number.uint64Value
+            case let nsstring as NSString: value = UInt64(nsstring as String)
+            case let nsdata as NSData: let data = nsdata as Data; value = UInt64(data: data)
             default: break
         }
         guard let result = value as? Self else { return nil }
@@ -305,6 +339,9 @@ public extension Bool {
             case let double as Double: value = double > 0
             case let string as String: value = (Int(string) ?? 0) > 0
             case let data as Data: value = data.bytes[0] > 0
+            case let number as NSNumber: value = number.boolValue
+            case let nsstring as NSString: value = nsstring.boolValue
+            case let nsdata as NSData: let data = nsdata as Data; value = data.bytes[0] > 0
             default: break
         }
         guard let result = value as? Self else { return nil }
@@ -331,6 +368,9 @@ public extension Float {
             case let double as Double: value = Float(double)
             case let string as String: value = Float(string)
             case let data as Data: value = Float(data: data)
+            case let number as NSNumber: value = number.floatValue
+            case let nsstring as NSString: value = nsstring.floatValue
+            case let nsdata as NSData: let data = nsdata as Data; value = Float(data: data)
             default: break
         }
         guard let result = value as? Self else { return nil }
@@ -357,6 +397,9 @@ public extension Double {
             case let double as Double: value = double
             case let string as String: value = Double(string)
             case let data as Data: value = Double(data: data)
+            case let number as NSNumber: value = number.doubleValue
+            case let nsstring as NSString: value = nsstring.doubleValue
+            case let nsdata as NSData: let data = nsdata as Data; value = Double(data: data)
             default: break
         }
         guard let result = value as? Self else { return nil }
@@ -383,6 +426,9 @@ public extension String {
             case let double as Double: value = String(double)
             case let string as String: value = string
             case let data as Data: value = hex ? data.hex : String(bytes: data.bytes)
+            case let number as NSNumber: value = number.stringValue
+            case let nsstring as NSString: value = nsstring as String
+            case let nsdata as NSData: let data = nsdata as Data; value = hex ? data.hex : String(bytes: data.bytes)
             default: break
         }
         guard let result = value as? Self else { return nil }
@@ -409,6 +455,9 @@ public extension Data {
             case let double as Double: value = Data(floating: double)
             case let string as String: value = hex ? Data(hex: string) : Data(string.bytes)
             case let data as Data: value = data
+            case let number as NSNumber: let string = number.stringValue; value = hex ? Data(hex: string) : Data(string.bytes)
+            case let nsstring as NSString: let string = nsstring as String; value = hex ? Data(hex: string) : Data(string.bytes)
+            case let nsdata as NSData: value = nsdata as Data
             default: break
         }
         guard let result = value as? Self else { return nil }
