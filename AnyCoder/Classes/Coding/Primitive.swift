@@ -465,6 +465,28 @@ public extension Data {
     }
 }
 
+
+public extension NSNumber {
+    convenience init?(primitive: Primitive) {
+        let number = Double(primitive: primitive) ?? 0
+        self.init(value: number)
+    }
+}
+
+public extension NSString {
+    convenience init?(primitive: Primitive, hex: Bool = false) {
+        let string = String(primitive: primitive, hex: hex) ?? ""
+        self.init(string: string as NSString)
+    }
+}
+
+public extension NSData {
+    convenience init?(primitive: Primitive, hex: Bool = false) {
+        let data = Data(primitive: primitive, hex: hex) ?? Data()
+        self.init(data: data)
+    }
+}
+
 public extension BinaryInteger {
     init(data: Data) {
         let bytes = data.bytes

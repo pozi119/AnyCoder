@@ -225,6 +225,9 @@ open class AnyDecoder {
                             case is Double.Type: val = Double(primitive: xval) ?? 0.0
                             case is Data.Type: val = Data(primitive: xval) ?? Data()
                             case is String.Type: val = String(primitive: xval) ?? ""
+                            case is NSNumber.Type: val = NSNumber(primitive: xval) ?? NSNumber()
+                            case is NSString.Type: val = NSString(primitive: xval) ?? NSString()
+                            case is NSData.Type: val = NSData(primitive: xval) ?? NSData()
                             default: break
                         }
                     }
