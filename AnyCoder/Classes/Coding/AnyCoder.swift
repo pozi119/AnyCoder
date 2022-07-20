@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Runtime
 
 open class AnyEncoder {
     open class func encode<T>(_ any: T) throws -> [String: Primitive] {
@@ -96,8 +97,6 @@ open class AnyEncoder {
                     print("not matched")
                     return nil
             }
-        } else {
-            return nil
         }
         return nil
     }
@@ -160,7 +159,7 @@ open class AnyDecoder {
         } else {
             genericType = type
         }
-        var object = try createInstance(of: genericType)
+        var object = try xCreateInstance(of: genericType)
         for prop in info.properties {
             if prop.name.count == 0 { continue }
             if let value = container[prop.name] {

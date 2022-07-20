@@ -1,0 +1,23 @@
+PODS:
+  - AnyCoder (0.1.1-beta1):
+    - Runtime
+  - Runtime (2.2.2)
+
+DEPENDENCIES:
+  - AnyCoder (from `../`)
+
+SPEC REPOS:
+  trunk:
+    - Runtime
+
+EXTERNAL SOURCES:
+  AnyCoder:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  AnyCoder: 193d30a23762ea2cc864107551a2c735868ba064
+  Runtime: 67741bd196fb4ad821c4d259ccc527bf734d8806
+
+PODFILE CHECKSUM: ab94f7ba0b160571f15e2080f242aa4b45f7e5e7
+
+COCOAPODS: 1.11.3

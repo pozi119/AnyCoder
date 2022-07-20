@@ -44,7 +44,7 @@
 		8B9AC99DF4CB4D7C1F4C4186 /* Pods-AnyCoder_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AnyCoder_Example.release.xcconfig"; path = "Target Support Files/Pods-AnyCoder_Example/Pods-AnyCoder_Example.release.xcconfig"; sourceTree = "<group>"; };
 		9FC7C8DB6C7C8C246478B505 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		CC571045742909E27F7270AB /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
-		CE4B273A8EDC9B677A605334 /* AnyCoder.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = AnyCoder.podspec; path = ../AnyCoder.podspec; sourceTree = "<group>"; };
+		CE4B273A8EDC9B677A605334 /* AnyCoder.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = AnyCoder.podspec; path = ../AnyCoder.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		D935B97FF1EC5FE7EE43DC0B /* Pods_AnyCoder_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AnyCoder_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FD4B5D6493B8E93AAA188EE6 /* Pods_AnyCoder_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AnyCoder_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -314,10 +314,12 @@
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-AnyCoder_Example/Pods-AnyCoder_Example-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/AnyCoder/AnyCoder.framework",
+				"${BUILT_PRODUCTS_DIR}/Runtime/Runtime.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AnyCoder.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Runtime.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;

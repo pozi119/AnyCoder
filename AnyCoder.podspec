@@ -19,5 +19,6 @@ Pod::Spec.new do |s|
   s.watchos.deployment_target = '3.0'
 
   s.source_files = 'AnyCoder/Classes/**/*'
-  
+  s.dependency 'Runtime'
+
 end

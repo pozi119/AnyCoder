@@ -1,9 +1,10 @@
 import AnyCoder
 import XCTest
+import Runtime
 
 struct Person: Codable, Equatable {
     enum Sex: String, Codable {
-        case male, female
+        case male = "m", female = "f"
     }
     
     var name: String
@@ -64,6 +65,9 @@ class Tests: XCTestCase {
         user?.person = person
 
         do {
+            let dic_1 = try AnyEncoder.encode(person)
+            let decoded_1 = try AnyDecoder.decode(Person?.self, from: dic_1)
+            XCTAssert(person! == decoded_1!)
             let dic0 = try AnyEncoder.encode(user)
             let decoded0 = try AnyDecoder.decode(User?.self, from: dic0)
             XCTAssert(user != nil && decoded0 != nil && user! == decoded0!)
