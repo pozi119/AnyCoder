@@ -8,7 +8,13 @@
 import Foundation
 import Runtime
 
+#if !canImport(Foundation)
+extension Decimal: DefaultConstructor {}
+extension Date: DefaultConstructor {}
+extension UUID: DefaultConstructor {}
 extension Data: DefaultConstructor {}
+#endif
+
 extension NSString: DefaultConstructor {}
 extension NSNumber: DefaultConstructor {}
 extension NSData: DefaultConstructor {}
