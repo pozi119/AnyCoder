@@ -30,460 +30,122 @@ extension NSNumber: Primitive {}
 extension NSString: Primitive {}
 extension NSData: Primitive {}
 
-public extension Int {
+public extension Primitive {
     init?(primitive: Primitive) {
-        var value: Any?
-        switch primitive {
-            case let int as Int: value = int
-            case let int8 as Int8: value = Int(truncatingIfNeeded: int8)
-            case let int16 as Int16: value = Int(truncatingIfNeeded: int16)
-            case let int32 as Int32: value = Int(truncatingIfNeeded: int32)
-            case let int64 as Int64: value = Int(truncatingIfNeeded: int64)
-            case let uint as UInt: value = Int(truncatingIfNeeded: uint)
-            case let uint8 as UInt8: value = Int(truncatingIfNeeded: uint8)
-            case let uint16 as UInt16: value = Int(truncatingIfNeeded: uint16)
-            case let uint32 as UInt32: value = Int(truncatingIfNeeded: uint32)
-            case let uint64 as UInt64: value = Int(truncatingIfNeeded: uint64)
-            case let bool as Bool: value = Int(bool ? 1 : 0)
-            case let float as Float: value = Int(float)
-            case let double as Double: value = Int(double)
-            case let string as String: value = Int(string)
-            case let data as Data: value = Int(data: data)
-            case let number as NSNumber: value = number.intValue
-            case let nsstring as NSString: value = nsstring.intValue
-            case let nsdata as NSData: let data = nsdata as Data; value = Int(data: data)
-            default: break
+        if let p = primitive as? Self {
+            self = p
+            return
         }
-        guard let result = value as? Self else { return nil }
-        self = result
-    }
-}
-
-public extension Int8 {
-    init?(primitive: Primitive) {
-        var value: Any?
-        switch primitive {
-            case let int as Int: value = Int8(truncatingIfNeeded: int)
-            case let int8 as Int8: value = int8
-            case let int16 as Int16: value = Int8(truncatingIfNeeded: int16)
-            case let int32 as Int32: value = Int8(truncatingIfNeeded: int32)
-            case let int64 as Int64: value = Int8(truncatingIfNeeded: int64)
-            case let uint as UInt: value = Int8(truncatingIfNeeded: uint)
-            case let uint8 as UInt8: value = Int8(truncatingIfNeeded: uint8)
-            case let uint16 as UInt16: value = Int8(truncatingIfNeeded: uint16)
-            case let uint32 as UInt32: value = Int8(truncatingIfNeeded: uint32)
-            case let uint64 as UInt64: value = Int8(truncatingIfNeeded: uint64)
-            case let bool as Bool: value = Int8(bool ? 1 : 0)
-            case let float as Float: value = Int8(float)
-            case let double as Double: value = Int8(double)
-            case let string as String: value = Int8(string)
-            case let data as Data: value = Int8(data: data)
-            case let number as NSNumber: value = number.int8Value
-            case let nsstring as NSString: value = Int8(nsstring as String)
-            case let nsdata as NSData: let data = nsdata as Data; value = Int8(data: data)
+        var r: Any?
+        switch Self.self {
+        case let k as any BinaryInteger.Type:
+            switch primitive {
+            case let v as any BinaryInteger:
+                r = k.init(truncatingIfNeeded: v) as! Self
+            case let v as any BinaryFloatingPoint:
+                r = k.init(v) as! Self
+            case let v as NSNumber:
+                if let k = k as? any SignedInteger.Type {
+                    r = k.init(truncatingIfNeeded: v.int64Value) as! Self
+                } else {
+                    r = k.init(truncatingIfNeeded: v.uint64Value) as! Self
+                }
+            case let v as Bool:
+                r = k.init(truncatingIfNeeded: v ? 1 : 0) as! Self
+            case let v as Data:
+                r = k.init(data: v) as! Self
+            case let v as NSData:
+                r = k.init(data: v as Data) as! Self
             default: break
-        }
-        guard let result = value as? Self else { return nil }
-        self = result
-    }
-}
+            }
 
-public extension Int16 {
-    init?(primitive: Primitive) {
-        var value: Any?
-        switch primitive {
-            case let int as Int: value = Int16(truncatingIfNeeded: int)
-            case let int8 as Int8: value = Int16(truncatingIfNeeded: int8)
-            case let int16 as Int16: value = int16
-            case let int32 as Int32: value = Int16(truncatingIfNeeded: int32)
-            case let int64 as Int64: value = Int16(truncatingIfNeeded: int64)
-            case let uint as UInt: value = Int16(truncatingIfNeeded: uint)
-            case let uint8 as UInt8: value = Int16(truncatingIfNeeded: uint8)
-            case let uint16 as UInt16: value = Int16(truncatingIfNeeded: uint16)
-            case let uint32 as UInt32: value = Int16(truncatingIfNeeded: uint32)
-            case let uint64 as UInt64: value = Int16(truncatingIfNeeded: uint64)
-            case let bool as Bool: value = Int16(bool ? 1 : 0)
-            case let float as Float: value = Int16(float)
-            case let double as Double: value = Int16(double)
-            case let string as String: value = Int16(string)
-            case let data as Data: value = Int16(data: data)
-            case let number as NSNumber: value = number.int16Value
-            case let nsstring as NSString: value = Int16(nsstring as String)
-            case let nsdata as NSData: let data = nsdata as Data; value = Int16(data: data)
+        case let k as any BinaryFloatingPoint.Type:
+            if r != nil { break }
+            switch primitive {
+            case let v as any BinaryInteger:
+                r = k.init(v) as! Self
+            case let v as any BinaryFloatingPoint:
+                r = k.init(v) as! Self
+            case let v as NSNumber:
+                r = k.init(v.doubleValue) as! Self
+            case let v as Bool:
+                r = k.init(v ? 1.0 : 0.0) as! Self
+            case let v as Data:
+                r = k.init(data: v) as! Self
+            case let v as NSData:
+                r = k.init(data: v as Data) as! Self
             default: break
-        }
-        guard let result = value as? Self else { return nil }
-        self = result
-    }
-}
+            }
 
-public extension Int32 {
-    init?(primitive: Primitive) {
-        var value: Any?
-        switch primitive {
-            case let int as Int: value = Int32(truncatingIfNeeded: int)
-            case let int8 as Int8: value = Int32(truncatingIfNeeded: int8)
-            case let int16 as Int16: value = Int32(truncatingIfNeeded: int16)
-            case let int32 as Int32: value = int32
-            case let int64 as Int64: value = Int32(truncatingIfNeeded: int64)
-            case let uint as UInt: value = Int32(truncatingIfNeeded: uint)
-            case let uint8 as UInt8: value = Int32(truncatingIfNeeded: uint8)
-            case let uint16 as UInt16: value = Int32(truncatingIfNeeded: uint16)
-            case let uint32 as UInt32: value = Int32(truncatingIfNeeded: uint32)
-            case let uint64 as UInt64: value = Int32(truncatingIfNeeded: uint64)
-            case let bool as Bool: value = Int32(bool ? 1 : 0)
-            case let float as Float: value = Int32(float)
-            case let double as Double: value = Int32(double)
-            case let string as String: value = Int32(string)
-            case let data as Data: value = Int(data: data)
-            case let number as NSNumber: value = number.int32Value
-            case let nsstring as NSString: value = Int32(nsstring as String)
-            case let nsdata as NSData: let data = nsdata as Data; value = Int32(data: data)
+        case is Bool.Type:
+            if r != nil { break }
+            switch primitive {
+            case _ as any BinaryInteger:
+                r = (Int64(primitive: primitive) ?? 0) > 0
+            case _ as any BinaryFloatingPoint:
+                r = (Double(primitive: primitive) ?? 0) > 0
+            case let v as NSNumber:
+                r = v.boolValue
+            case let v as Data:
+                r = v.bytes.first ?? 0 > 0
+            case let v as NSData:
+                r = (v as Data).bytes.first ?? 0 > 0
             default: break
-        }
-        guard let result = value as? Self else { return nil }
-        self = result
-    }
-}
+            }
 
-public extension Int64 {
-    init?(primitive: Primitive) {
-        var value: Any?
-        switch primitive {
-            case let int as Int: value = Int64(truncatingIfNeeded: int)
-            case let int8 as Int8: value = Int64(truncatingIfNeeded: int8)
-            case let int16 as Int16: value = Int64(truncatingIfNeeded: int16)
-            case let int32 as Int32: value = Int64(truncatingIfNeeded: int32)
-            case let int64 as Int64: value = int64
-            case let uint as UInt: value = Int64(truncatingIfNeeded: uint)
-            case let uint8 as UInt8: value = Int64(truncatingIfNeeded: uint8)
-            case let uint16 as UInt16: value = Int64(truncatingIfNeeded: uint16)
-            case let uint32 as UInt32: value = Int64(truncatingIfNeeded: uint32)
-            case let uint64 as UInt64: value = Int64(truncatingIfNeeded: uint64)
-            case let bool as Bool: value = Int64(bool ? 1 : 0)
-            case let float as Float: value = Int64(float)
-            case let double as Double: value = Int64(double)
-            case let string as String: value = Int64(string)
-            case let data as Data: value = Int64(data: data)
-            case let number as NSNumber: value = number.int64Value
-            case let nsstring as NSString: value = Int64(nsstring as String)
-            case let nsdata as NSData: let data = nsdata as Data; value = Int64(data: data)
+        case is Data.Type:
+            if r != nil { break }
+            switch primitive {
+            case let v as any BinaryInteger:
+                r = Data(integer: v)
+            case let v as any BinaryFloatingPoint:
+                r = Data(floating: v)
+            case let v as NSNumber:
+                r = v.doubleValue != 0 ? Data(floating: v.doubleValue) : Data(integer: v.uint64Value)
+            case let v as NSData:
+                r = (v as Data)
+            case let v as String:
+                r = Data(hex: v)
+            case let v as NSString:
+                r = Data(hex: v as String)
             default: break
-        }
-        guard let result = value as? Self else { return nil }
-        self = result
-    }
-}
+            }
 
-public extension UInt {
-    init?(primitive: Primitive) {
-        var value: Any?
-        switch primitive {
-            case let int as Int: value = UInt(truncatingIfNeeded: int)
-            case let int8 as Int8: value = UInt(truncatingIfNeeded: int8)
-            case let int16 as Int16: value = UInt(truncatingIfNeeded: int16)
-            case let int32 as Int32: value = UInt(truncatingIfNeeded: int32)
-            case let int64 as Int64: value = UInt(truncatingIfNeeded: int64)
-            case let uint as UInt: value = uint
-            case let uint8 as UInt8: value = UInt(truncatingIfNeeded: uint8)
-            case let uint16 as UInt16: value = UInt(truncatingIfNeeded: uint16)
-            case let uint32 as UInt32: value = UInt(truncatingIfNeeded: uint32)
-            case let uint64 as UInt64: value = UInt(truncatingIfNeeded: uint64)
-            case let bool as Bool: value = UInt(bool ? 1 : 0)
-            case let float as Float: value = UInt(float)
-            case let double as Double: value = UInt(double)
-            case let string as String: value = UInt(string)
-            case let data as Data: value = UInt(data: data)
-            case let number as NSNumber: value = number.uintValue
-            case let nsstring as NSString: value = UInt(nsstring as String)
-            case let nsdata as NSData: let data = nsdata as Data; value = UInt(data: data)
+        case is String.Type:
+            if r != nil { break }
+            switch primitive {
+            case let v as CustomStringConvertible:
+                r = v.description
+            default:
+                r = "\(primitive)"
+            }
+
+        case is NSString.Type:
+            if r != nil { break }
+            switch primitive {
+            case let v as CustomStringConvertible:
+                r = v.description as NSString
+            default:
+                r = "\(primitive)" as NSString
+            }
+        case is NSNumber.Type:
+            if r != nil { break }
+            r = NSNumber(value: Double(primitive: primitive) ?? 0)
+
+        case let k as any LosslessStringConvertible.Type:
+            if r != nil { break }
+            switch primitive {
+            case let v as String:
+                r = k.init(v)
+            case let v as NSString:
+                r = k.init(v as String)
             default: break
+            }
+        default: break
         }
-        guard let result = value as? Self else { return nil }
+
+        guard let result = r as? Self else { return nil }
         self = result
-    }
-}
-
-public extension UInt8 {
-    init?(primitive: Primitive) {
-        var value: Any?
-        switch primitive {
-            case let int as Int: value = UInt8(truncatingIfNeeded: int)
-            case let int8 as Int8: value = UInt8(truncatingIfNeeded: int8)
-            case let int16 as Int16: value = UInt8(truncatingIfNeeded: int16)
-            case let int32 as Int32: value = UInt8(truncatingIfNeeded: int32)
-            case let int64 as Int64: value = UInt8(truncatingIfNeeded: int64)
-            case let uint as UInt: value = UInt8(truncatingIfNeeded: uint)
-            case let uint8 as UInt8: value = uint8
-            case let uint16 as UInt16: value = UInt8(truncatingIfNeeded: uint16)
-            case let uint32 as UInt32: value = UInt8(truncatingIfNeeded: uint32)
-            case let uint64 as UInt64: value = UInt8(truncatingIfNeeded: uint64)
-            case let bool as Bool: value = UInt8(bool ? 1 : 0)
-            case let float as Float: value = UInt8(float)
-            case let double as Double: value = UInt8(double)
-            case let string as String: value = UInt8(string)
-            case let data as Data: value = UInt8(data: data)
-            case let number as NSNumber: value = number.uint8Value
-            case let nsstring as NSString: value = UInt8(nsstring as String)
-            case let nsdata as NSData: let data = nsdata as Data; value = UInt8(data: data)
-            default: break
-        }
-        guard let result = value as? Self else { return nil }
-        self = result
-    }
-}
-
-public extension UInt16 {
-    init?(primitive: Primitive) {
-        var value: Any?
-        switch primitive {
-            case let int as Int: value = UInt16(truncatingIfNeeded: int)
-            case let int8 as Int8: value = UInt16(truncatingIfNeeded: int8)
-            case let int16 as Int16: value = UInt16(truncatingIfNeeded: int16)
-            case let int32 as Int32: value = UInt16(truncatingIfNeeded: int32)
-            case let int64 as Int64: value = UInt16(truncatingIfNeeded: int64)
-            case let uint as UInt: value = UInt16(truncatingIfNeeded: uint)
-            case let uint8 as UInt8: value = UInt16(truncatingIfNeeded: uint8)
-            case let uint16 as UInt16: value = uint16
-            case let uint32 as UInt32: value = UInt16(truncatingIfNeeded: uint32)
-            case let uint64 as UInt64: value = UInt16(truncatingIfNeeded: uint64)
-            case let bool as Bool: value = UInt16(bool ? 1 : 0)
-            case let float as Float: value = UInt16(float)
-            case let double as Double: value = UInt16(double)
-            case let string as String: value = UInt16(string)
-            case let data as Data: value = UInt16(data: data)
-            case let number as NSNumber: value = number.uint16Value
-            case let nsstring as NSString: value = UInt16(nsstring as String)
-            case let nsdata as NSData: let data = nsdata as Data; value = UInt16(data: data)
-            default: break
-        }
-        guard let result = value as? Self else { return nil }
-        self = result
-    }
-}
-
-public extension UInt32 {
-    init?(primitive: Primitive) {
-        var value: Any?
-        switch primitive {
-            case let int as Int: value = UInt32(truncatingIfNeeded: int)
-            case let int8 as Int8: value = UInt32(truncatingIfNeeded: int8)
-            case let int16 as Int16: value = UInt32(truncatingIfNeeded: int16)
-            case let int32 as Int32: value = UInt32(truncatingIfNeeded: int32)
-            case let int64 as Int64: value = UInt32(truncatingIfNeeded: int64)
-            case let uint as UInt: value = UInt32(truncatingIfNeeded: uint)
-            case let uint8 as UInt8: value = UInt32(truncatingIfNeeded: uint8)
-            case let uint16 as UInt16: value = UInt32(truncatingIfNeeded: uint16)
-            case let uint32 as UInt32: value = uint32
-            case let uint64 as UInt64: value = UInt32(truncatingIfNeeded: uint64)
-            case let bool as Bool: value = UInt32(bool ? 1 : 0)
-            case let float as Float: value = UInt32(float)
-            case let double as Double: value = UInt32(double)
-            case let string as String: value = UInt32(string)
-            case let data as Data: value = UInt32(data: data)
-            case let number as NSNumber: value = number.uint32Value
-            case let nsstring as NSString: value = UInt32(nsstring as String)
-            case let nsdata as NSData: let data = nsdata as Data; value = UInt32(data: data)
-            default: break
-        }
-        guard let result = value as? Self else { return nil }
-        self = result
-    }
-}
-
-public extension UInt64 {
-    init?(primitive: Primitive) {
-        var value: Any?
-        switch primitive {
-            case let int as Int: value = UInt64(truncatingIfNeeded: int)
-            case let int8 as Int8: value = UInt64(truncatingIfNeeded: int8)
-            case let int16 as Int16: value = UInt64(truncatingIfNeeded: int16)
-            case let int32 as Int32: value = UInt64(truncatingIfNeeded: int32)
-            case let int64 as Int64: value = UInt64(truncatingIfNeeded: int64)
-            case let uint as UInt: value = UInt64(truncatingIfNeeded: uint)
-            case let uint8 as UInt8: value = UInt64(truncatingIfNeeded: uint8)
-            case let uint16 as UInt16: value = UInt64(truncatingIfNeeded: uint16)
-            case let uint32 as UInt32: value = UInt64(truncatingIfNeeded: uint32)
-            case let uint64 as UInt64: value = uint64
-            case let bool as Bool: value = UInt64(bool ? 1 : 0)
-            case let float as Float: value = UInt64(float)
-            case let double as Double: value = UInt64(double)
-            case let string as String: value = UInt64(string)
-            case let data as Data: value = UInt64(data: data)
-            case let number as NSNumber: value = number.uint64Value
-            case let nsstring as NSString: value = UInt64(nsstring as String)
-            case let nsdata as NSData: let data = nsdata as Data; value = UInt64(data: data)
-            default: break
-        }
-        guard let result = value as? Self else { return nil }
-        self = result
-    }
-}
-
-public extension Bool {
-    init?(primitive: Primitive) {
-        var value: Any?
-        switch primitive {
-            case let int as Int: value = int > 0
-            case let int8 as Int8: value = int8 > 0
-            case let int16 as Int16: value = int16 > 0
-            case let int32 as Int32: value = int32 > 0
-            case let int64 as Int64: value = int64 > 0
-            case let uint as UInt: value = uint > 0
-            case let uint8 as UInt8: value = uint8 > 0
-            case let uint16 as UInt16: value = uint16 > 0
-            case let uint32 as UInt32: value = uint32 > 0
-            case let uint64 as UInt64: value = uint64 > 0
-            case let bool as Bool: value = bool
-            case let float as Float: value = float > 0
-            case let double as Double: value = double > 0
-            case let string as String: value = (Int(string) ?? 0) > 0
-            case let data as Data: value = data.bytes[0] > 0
-            case let number as NSNumber: value = number.boolValue
-            case let nsstring as NSString: value = nsstring.boolValue
-            case let nsdata as NSData: let data = nsdata as Data; value = data.bytes[0] > 0
-            default: break
-        }
-        guard let result = value as? Self else { return nil }
-        self = result
-    }
-}
-
-public extension Float {
-    init?(primitive: Primitive) {
-        var value: Any?
-        switch primitive {
-            case let int as Int: value = Float(int)
-            case let int8 as Int8: value = Float(int8)
-            case let int16 as Int16: value = Float(int16)
-            case let int32 as Int32: value = Float(int32)
-            case let int64 as Int64: value = Float(int64)
-            case let uint as UInt: value = Float(uint)
-            case let uint8 as UInt8: value = Float(uint8)
-            case let uint16 as UInt16: value = Float(uint16)
-            case let uint32 as UInt32: value = Float(uint32)
-            case let uint64 as UInt64: value = Float(uint64)
-            case let bool as Bool: value = Float(bool ? 1 : 0)
-            case let float as Float: value = float
-            case let double as Double: value = Float(double)
-            case let string as String: value = Float(string)
-            case let data as Data: value = Float(data: data)
-            case let number as NSNumber: value = number.floatValue
-            case let nsstring as NSString: value = nsstring.floatValue
-            case let nsdata as NSData: let data = nsdata as Data; value = Float(data: data)
-            default: break
-        }
-        guard let result = value as? Self else { return nil }
-        self = result
-    }
-}
-
-public extension Double {
-    init?(primitive: Primitive) {
-        var value: Any?
-        switch primitive {
-            case let int as Int: value = Double(int)
-            case let int8 as Int8: value = Double(int8)
-            case let int16 as Int16: value = Double(int16)
-            case let int32 as Int32: value = Double(int32)
-            case let int64 as Int64: value = Double(int64)
-            case let uint as UInt: value = Double(uint)
-            case let uint8 as UInt8: value = Double(uint8)
-            case let uint16 as UInt16: value = Double(uint16)
-            case let uint32 as UInt32: value = Double(uint32)
-            case let uint64 as UInt64: value = Double(uint64)
-            case let bool as Bool: value = Double(bool ? 1 : 0)
-            case let float as Float: value = Double(float)
-            case let double as Double: value = double
-            case let string as String: value = Double(string)
-            case let data as Data: value = Double(data: data)
-            case let number as NSNumber: value = number.doubleValue
-            case let nsstring as NSString: value = nsstring.doubleValue
-            case let nsdata as NSData: let data = nsdata as Data; value = Double(data: data)
-            default: break
-        }
-        guard let result = value as? Self else { return nil }
-        self = result
-    }
-}
-
-public extension String {
-    init?(primitive: Primitive, hex: Bool = false) {
-        var value: Any?
-        switch primitive {
-            case let int as Int: value = String(int)
-            case let int8 as Int8: value = String(int8)
-            case let int16 as Int16: value = String(int16)
-            case let int32 as Int32: value = String(int32)
-            case let int64 as Int64: value = String(int64)
-            case let uint as UInt: value = String(uint)
-            case let uint8 as UInt8: value = String(uint8)
-            case let uint16 as UInt16: value = String(uint16)
-            case let uint32 as UInt32: value = String(uint32)
-            case let uint64 as UInt64: value = String(uint64)
-            case let bool as Bool: value = String(bool ? 1 : 0)
-            case let float as Float: value = String(float)
-            case let double as Double: value = String(double)
-            case let string as String: value = string
-            case let data as Data: value = hex ? data.hex : String(bytes: data.bytes)
-            case let number as NSNumber: value = number.stringValue
-            case let nsstring as NSString: value = nsstring as String
-            case let nsdata as NSData: let data = nsdata as Data; value = hex ? data.hex : String(bytes: data.bytes)
-            default: break
-        }
-        guard let result = value as? Self else { return nil }
-        self = result
-    }
-}
-
-public extension Data {
-    init?(primitive: Primitive, hex: Bool = false) {
-        var value: Any?
-        switch primitive {
-            case let int as Int: value = Data(integer: int)
-            case let int8 as Int8: value = Data(integer: int8)
-            case let int16 as Int16: value = Data(integer: int16)
-            case let int32 as Int32: value = Data(integer: int32)
-            case let int64 as Int64: value = Data(integer: int64)
-            case let uint as UInt: value = Data(integer: uint)
-            case let uint8 as UInt8: value = Data(integer: uint8)
-            case let uint16 as UInt16: value = Data(integer: uint16)
-            case let uint32 as UInt32: value = Data(integer: uint32)
-            case let uint64 as UInt64: value = Data(integer: uint64)
-            case let bool as Bool: value = Data((bool ? 1 : 0).bytes)
-            case let float as Float: value = Data(floating: float)
-            case let double as Double: value = Data(floating: double)
-            case let string as String: value = hex ? Data(hex: string) : Data(string.bytes)
-            case let data as Data: value = data
-            case let number as NSNumber: let string = number.stringValue; value = hex ? Data(hex: string) : Data(string.bytes)
-            case let nsstring as NSString: let string = nsstring as String; value = hex ? Data(hex: string) : Data(string.bytes)
-            case let nsdata as NSData: value = nsdata as Data
-            default: break
-        }
-        guard let result = value as? Self else { return nil }
-        self = result
-    }
-}
-
-
-public extension NSNumber {
-    convenience init?(primitive: Primitive) {
-        let number = Double(primitive: primitive) ?? 0
-        self.init(value: number)
-    }
-}
-
-public extension NSString {
-    convenience init?(primitive: Primitive, hex: Bool = false) {
-        let string = String(primitive: primitive, hex: hex) ?? ""
-        self.init(string: string as NSString)
-    }
-}
-
-public extension NSData {
-    convenience init?(primitive: Primitive, hex: Bool = false) {
-        let data = Data(primitive: primitive, hex: hex) ?? Data()
-        self.init(data: data)
     }
 }
 
@@ -526,10 +188,10 @@ public extension Data {
 
     private static func hexDigit(_ byte: UInt8) -> UInt8 {
         switch byte {
-            case 0x30 ... 0x39: return byte - 0x30
-            case 0x41 ... 0x46: return byte - 0x41 + 0xA
-            case 0x61 ... 0x66: return byte - 0x61 + 0xA
-            default: return 0xFF
+        case 0x30 ... 0x39: return byte - 0x30
+        case 0x41 ... 0x46: return byte - 0x41 + 0xA
+        case 0x61 ... 0x66: return byte - 0x61 + 0xA
+        default: return 0xFF
         }
     }
 
@@ -567,5 +229,31 @@ public extension Data {
 
     init<T>(floating: T) where T: BinaryFloatingPoint {
         self.init(floating.bytes)
+    }
+}
+
+public extension RawRepresentable {
+    init?(primitive: Primitive) {
+        guard let val = primitive as? Self.RawValue else { return nil }
+        self.init(rawValue: val)
+    }
+}
+
+public extension Array {
+    func splat(_ num: Int) -> Any? {
+        guard num > 0, num <= count, num <= 10 else { return nil }
+        switch num {
+        case 1: return (self[0])
+        case 2: return (self[0], self[1])
+        case 3: return (self[0], self[1], self[2])
+        case 4: return (self[0], self[1], self[2], self[3])
+        case 5: return (self[0], self[1], self[2], self[3], self[4])
+        case 6: return (self[0], self[1], self[2], self[3], self[4], self[5])
+        case 7: return (self[0], self[1], self[2], self[3], self[4], self[5], self[6])
+        case 8: return (self[0], self[1], self[2], self[3], self[4], self[5], self[6], self[7])
+        case 9: return (self[0], self[1], self[2], self[3], self[4], self[5], self[6], self[7], self[8])
+        case 10: return (self[0], self[1], self[2], self[3], self[4], self[5], self[6], self[7], self[8], self[9])
+        default: return nil
+        }
     }
 }

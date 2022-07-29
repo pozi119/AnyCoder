@@ -5,8 +5,8 @@
 //  Created by Valo on 2022/7/20.
 //
 
-import Runtime
 import Foundation
+import Runtime
 
 extension Data: DefaultConstructor {}
 extension NSString: DefaultConstructor {}
@@ -30,20 +30,21 @@ struct ClassMetadataLayout {
 }
 
 public func xCreateInstance(of type: Any.Type, constructor: ((PropertyInfo) throws -> Any)? = nil) throws -> Any {
-    
     if let defaultConstructor = type as? DefaultConstructor.Type {
         return defaultConstructor.init()
     }
-    
+
     let info = try typeInfo(of: type)
     let kind = info.kind
     switch kind {
     case .struct:
-        return try xBuildStruct(type: type, info:info, constructor: constructor)
+        return try xBuildStruct(type: type, info: info, constructor: constructor)
     case .class:
-        return try xBuildClass(type: type, info:info)
+        return try xBuildClass(type: type, info: info)
     case .enum:
-        return try xBuildStruct(type: type, info:info, constructor: constructor)
+        fallthrough
+    case .tuple:
+        return try xBuildStruct(type: type, info: info, constructor: constructor)
     default:
         throw DecodingError.mismatch(type)
     }
@@ -63,7 +64,7 @@ func xBuildClass(type: Any.Type, info: TypeInfo) throws -> Any {
     let alignment = Int32(info.alignment)
 
     guard let value = swift_allocObject(metadata, instanceSize, alignment) else {
-            throw DecodingError.mismatch(type)
+        throw DecodingError.mismatch(type)
     }
 
     try setProperties(typeInfo: info, pointer: UnsafeMutableRawPointer(mutating: value))
@@ -75,10 +76,10 @@ func setProperties(typeInfo: TypeInfo,
                    pointer: UnsafeMutableRawPointer,
                    constructor: ((PropertyInfo) throws -> Any)? = nil) throws {
     for property in typeInfo.properties {
-        let value = try constructor.map { (resolver) -> Any in
-            return try resolver(property)
+        let value = try constructor.map { resolver -> Any in
+            try resolver(property)
         } ?? defaultValue(of: property.type)
-        
+
         let valuePointer = pointer.advanced(by: property.offset)
         let sets = setters(type: property.type)
         sets.set(value: value, pointer: valuePointer, initialize: true)
@@ -86,12 +87,11 @@ func setProperties(typeInfo: TypeInfo,
 }
 
 func defaultValue(of type: Any.Type) throws -> Any {
-    
     if let constructable = type as? DefaultConstructor.Type {
         return constructable.init()
     } else if let isOptional = type as? ExpressibleByNilLiteral.Type {
         return isOptional.init(nilLiteral: ())
     }
-    
+
     return try xCreateInstance(of: type)
 }

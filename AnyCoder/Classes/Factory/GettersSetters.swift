@@ -26,7 +26,7 @@ protocol Setters {}
 extension Setters {
     static func set(value: Any, pointer: UnsafeMutableRawPointer, initialize: Bool = false) {
         if let value = value as? Self {
-            let boundPointer = pointer.assumingMemoryBound(to: self);
+            let boundPointer = pointer.assumingMemoryBound(to: self)
             if initialize {
                 boundPointer.initialize(to: value)
             } else {
