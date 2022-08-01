@@ -17,7 +17,8 @@ AnyCoder is available through [CocoaPods](https://cocoapods.org). To install
 it, simply add the following line to your Podfile:
 
 ```ruby
-pod 'AnyCoder'
+pod 'AnyCoder', '~> 0.1.1'
+pod 'Runtime', :git => 'https://github.com/wickwirew/Runtime.git' // The version in pods is 2.2.2, which requires 2.2.4
 ```
 
 ## Author
