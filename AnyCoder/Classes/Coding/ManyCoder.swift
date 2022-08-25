@@ -82,7 +82,7 @@ func cast<T>(_ item: Any?, as type: T.Type) throws -> T {
     }
 
     guard value != nil else {
-        throw EncodingError.invalidCast(item as Any, type)
+        return try xCreateInstance(of: type) as! T
     }
     return value!
 }
