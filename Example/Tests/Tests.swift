@@ -13,6 +13,7 @@ struct Person: Codable, Equatable {
     var sex: Sex
     var intro: String
     var data: Data?
+    var date: Date
 }
 
 struct Event {
@@ -34,6 +35,7 @@ class User {
     var person: Person?
     var list: [Int] = []
     var data: Data = Data()
+    var date: Date = Date()
     var tuple1: (String, Int) = ("a", 1)
     var tuple2: (String, Int)? = ("a", 1)
     var tuple3: (String?, Int) = ("a", 1)
@@ -59,8 +61,9 @@ class Tests: XCTestCase {
     }
 
     func testCoder() {
+        let date = Date()
         let data = Data([0x31, 0x32, 0x33, 0x34, 0x35, 0xF, 0x41, 0x42, 0x43])
-        var person: Person? = Person(name: "张三", age: 22, id: 1, sex: .female, intro: "哈哈哈哈")
+        var person: Person? = Person(name: "张三", age: 22, id: 1, sex: .female, intro: "哈哈哈哈", date: date)
         person?.data = data
 
         let user: User? = User(id: 2, name: "zhangsan")

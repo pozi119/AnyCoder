@@ -67,6 +67,12 @@ open class AnyEncoder {
             }
             return primitive
         }
+        if let date = any as? Date {
+            return date.timeIntervalSinceReferenceDate
+        }
+        if let date = any as? NSDate {
+            return date.timeIntervalSinceReferenceDate
+        }
 
         let mirror = Mirror(reflecting: any)
         if mirror.children.isEmpty {
@@ -174,8 +180,8 @@ open class AnyDecoder {
                 if let xval = value as? Primitive {
                     if let pt = prop.type as? Primitive.Type,
                        let val = pt.init(primitive: xval) {
-                        did = true
                         try prop.set(value: val, on: &object)
+                        did = true
                     }
                 }
                 if !did {
@@ -185,14 +191,14 @@ open class AnyDecoder {
                         let gpt = xinfo.genericTypes.first!
                         if let pt = gpt as? Primitive.Type,
                            let val = pt.init(primitive: xval) {
-                            did = true
                             try prop.set(value: val, on: &object)
+                            did = true
                         }
                     } else if xinfo.kind == .enum {
-                        did = true
                         if let t = prop.type as? any RawRepresentable.Type, let v = value as? Primitive {
                             if let val = t.init(primitive: v) {
                                 try prop.set(value: val, on: &object)
+                                did = true
                             }
                         } else if let xval = value as? UInt8 {
                             let pval = UnsafeMutableRawPointer.allocate(byteCount: xinfo.size, alignment: xinfo.alignment)
@@ -201,9 +207,34 @@ open class AnyDecoder {
                             try setProperties(typeInfo: xinfo, pointer: pval)
                             let val = getters(type: prop.type).get(from: pval)
                             try prop.set(value: val, on: &object)
+                            did = true
                         }
-                    } else {
-                        did = false
+                    }
+                }
+                if !did {
+                    var double: Double?
+                    if let float = value as? any BinaryFloatingPoint {
+                        double = Double(float)
+                    } else if let num = value as? NSNumber {
+                        double = num.doubleValue
+                    }
+                    if let double = double {
+                        switch prop.type {
+                        case is Date?.Type: fallthrough
+                        case is Date.Type:
+                            let date = Date(timeIntervalSinceReferenceDate: double)
+                            try prop.set(value: date, on: &object)
+                            did = true
+
+                        case is NSDate?.Type: fallthrough
+                        case is NSDate.Type:
+                            let date = NSDate(timeIntervalSinceReferenceDate: double)
+                            try prop.set(value: date, on: &object)
+                            did = true
+
+                        default:
+                            break
+                        }
                     }
                 }
                 if !did, let string = value as? String {
