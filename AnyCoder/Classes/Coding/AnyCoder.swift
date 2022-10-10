@@ -140,10 +140,9 @@ open class AnyEncoder {
            let raw = item.rawValue as? Primitive {
             return raw
         }
-        var aItem = item
-        let p1 = withUnsafeBytes(of: &aItem) { $0 }
-        let p2 = p1.withMemoryRebound(to: UInt8.self) { $0 }
-        return p2[0]
+        let p1 = withUnsafePointer(to: item) { $0 }
+        let p2 = p1.withMemoryRebound(to: UInt8.self, capacity: 1) { $0 }
+        return p2.pointee
     }
 }
 
