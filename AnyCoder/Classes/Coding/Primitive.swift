@@ -96,12 +96,10 @@ public extension Primitive {
         case is Data.Type:
             if r != nil { break }
             switch primitive {
-            case let v as any BinaryInteger:
-                r = Data(integer: v)
-            case let v as any BinaryFloatingPoint:
-                r = Data(floating: v)
+            case let v as any Numeric:
+                r = Data(numeric: v)
             case let v as NSNumber:
-                r = v.doubleValue != 0 ? Data(floating: v.doubleValue) : Data(integer: v.uint64Value)
+                r = Data(numeric: v.doubleValue)
             case let v as NSData:
                 r = (v as Data)
             case let v as String:
@@ -149,29 +147,26 @@ public extension Primitive {
     }
 }
 
-public extension BinaryInteger {
+public extension Numeric {
     init(data: Data) {
-        let bytes = data.bytes
-        let uint64 = (0 ..< bytes.count).reduce(0) { $0 | (UInt64(bytes[$1]) << ($1 * 8)) }
-        self.init(truncatingIfNeeded: uint64)
+        self.init(bytes: data.bytes)
+    }
+
+    init(bytes: [UInt8]) {
+        let stride = MemoryLayout<Self>.stride
+        let uint8Pointer = UnsafeMutablePointer<UInt8>.allocate(capacity: stride)
+        for i in 0 ..< bytes.count {
+            uint8Pointer[i] = bytes[i]
+        }
+        let integerPointer = uint8Pointer.withMemoryRebound(to: Self.self, capacity: 1) { $0 }
+        self = integerPointer.pointee
     }
 
     var bytes: [UInt8] {
-        let uint64 = UInt64(truncatingIfNeeded: self)
-        return (0 ..< (bitWidth / 8)).reduce([]) { $0 + [UInt8((uint64 >> (UInt64($1) * 8)) & UInt64(0xFF))] }
-    }
-}
-
-public extension BinaryFloatingPoint {
-    init(data: Data) {
-        let bytes = data.bytes
-        let uint64 = (0 ..< bytes.count).reduce(0) { $0 & (UInt64(bytes[$1]) << ($1 * 8)) }
-        self.init(uint64)
-    }
-
-    var bytes: [UInt8] {
-        let uint64 = UInt64(self)
-        return (0 ..< 8).reduce([]) { $0 + [UInt8((uint64 >> (UInt64($1) * 8)) & UInt64(0xFF))] }
+        let stride = MemoryLayout<Self>.stride
+        let integerPointer = withUnsafePointer(to: self) { $0 }
+        let uint8Pointer = integerPointer.withMemoryRebound(to: UInt8.self, capacity: stride) { $0 }
+        return (0 ..< stride).reduce([]) { $0 + [uint8Pointer[$1]] }
     }
 }
 
@@ -223,12 +218,8 @@ public extension Data {
         self.init(buffer)
     }
 
-    init<T>(integer: T) where T: BinaryInteger {
-        self.init(integer.bytes)
-    }
-
-    init<T>(floating: T) where T: BinaryFloatingPoint {
-        self.init(floating.bytes)
+    init<T>(numeric: T) where T: Numeric {
+        self.init(numeric.bytes)
     }
 }
 
