@@ -29,6 +29,7 @@ extension Data: Primitive {}
 extension NSNumber: Primitive {}
 extension NSString: Primitive {}
 extension NSData: Primitive {}
+extension CGFloat: Primitive {}
 
 public extension Primitive {
     init?(primitive: Primitive) {
