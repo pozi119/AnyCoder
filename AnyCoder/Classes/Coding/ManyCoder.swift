@@ -56,35 +56,16 @@ func cast<T>(_ item: Any?, as type: T.Type) throws -> T {
         return value
     }
 
-    guard let temp = item as? Primitive else {
+    guard let primitive = item as? Primitive else {
         throw EncodingError.invalidCast(item as Any, type)
     }
 
-    let desc = String(describing: temp)
-    var value: T?
-    switch type {
-    case is Int.Type: value = (Int(desc) ?? 0) as? T
-    case is Int8.Type: value = (Int8(desc) ?? 0) as? T
-    case is Int16.Type: value = (Int16(desc) ?? 0) as? T
-    case is Int32.Type: value = (Int32(desc) ?? 0) as? T
-    case is Int64.Type: value = (Int64(desc) ?? 0) as? T
-    case is Int.Type: value = (UInt(desc) ?? 0) as? T
-    case is UInt8.Type: value = (UInt8(desc) ?? 0) as? T
-    case is UInt16.Type: value = (UInt16(desc) ?? 0) as? T
-    case is UInt32.Type: value = (UInt32(desc) ?? 0) as? T
-    case is UInt64.Type: value = (UInt64(desc) ?? 0) as? T
-    case is Bool.Type: value = (Bool(desc) ?? false) as? T
-    case is Float.Type: value = (Float(desc) ?? 0) as? T
-    case is Double.Type: value = (Double(desc) ?? 0) as? T
-    case is String.Type: value = desc as? T
-    case is Data.Type: value = Data(hex: desc) as? T
-    default: value = nil
+    if let type = type as? Primitive.Type,
+       let result = type.init(primitive: primitive) as? T {
+        return result
     }
 
-    guard value != nil else {
-        return try xCreateInstance(of: type) as! T
-    }
-    return value!
+    return try xCreateInstance(of: type) as! T
 }
 
 open class ManyEncoder: Encoder {

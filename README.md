@@ -20,8 +20,8 @@ it, simply add the following line to your Podfile:
 pod 'AnyCoder', '~> 0.1.4'
 pod 'Runtime', :git => 'https://github.com/wickwirew/Runtime.git' // The version in pods is 2.2.2, which requires 2.2.4
 ```
-## Change(0.1.4)
-1. 修改Float,Double转换方式
+## Change(0.1.5)
+1. 修复ManyDecoder解析Bool始终为false的问题。
 
 ## Author
 
