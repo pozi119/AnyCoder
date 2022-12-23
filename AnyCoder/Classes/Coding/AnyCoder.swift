@@ -172,7 +172,7 @@ open class AnyDecoder {
         }
         var object = try xCreateInstance(of: genericType)
         for prop in info.properties {
-            if prop.name.count == 0 { continue }
+            if prop.name.isEmpty { continue }
             if let value = container[prop.name] {
                 let xinfo = try typeInfo(of: prop.type)
                 var did = false

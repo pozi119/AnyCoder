@@ -24,7 +24,7 @@ fileprivate final class Storage {
 
     @discardableResult
     func popContainer() -> Any {
-        precondition(containers.count > 0, "Empty container stack.")
+        precondition(!containers.isEmpty, "Empty container stack.")
         return containers.popLast()!
     }
 }
